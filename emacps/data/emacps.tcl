@@ -64,7 +64,7 @@ proc gen_phy_node args {
     set rgmii_node [add_or_get_dt_node -l $phy_name -n $phy_name -u $phya -d $default_dts -p $mdio_node]
     hsi::utils::add_new_dts_param "${rgmii_node}" "reg" $phya int
     hsi::utils::add_new_dts_param "${rgmii_node}" "compatible" "xlnx,gmii-to-rgmii-1.0" string
-    hsi::utils::add_new_dts_param "${rgmii_node}" "phy-handle" phy1 reference
+    hsi::utils::add_new_dts_param "${rgmii_node}" "phy-handle" "${phy_name}_phy" reference
 }
 
 proc generate {drv_handle} {
@@ -191,7 +191,7 @@ proc generate {drv_handle} {
     set phya [lindex $conv_data 0]
     if { $phya != "-1" } {
         set phy_name "[lindex $conv_data 1]"
-        set_drv_prop $drv_handle phy-handle "phy1" reference
+        set_drv_prop $drv_handle phy-handle "${phy_name}_phy" reference
         set mdio_node [gen_mdio1_node $drv_handle $node]
         gen_phy_node $mdio_node $phy_name $phya
     }
